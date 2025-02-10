@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.ninjago.createpackserverfixes.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "create_pack_server_fixes.refmap.json",
+  "mixins": [
+    "CopycatBlockMixin",
+    "VSRelocationUtilMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
