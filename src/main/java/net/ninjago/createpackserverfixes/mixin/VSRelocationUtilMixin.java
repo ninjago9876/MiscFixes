@@ -1,6 +1,7 @@
 package net.ninjago.createpackserverfixes.mixin;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,6 +29,23 @@ public class VSRelocationUtilMixin {
                 entity.getPersistentData().putBoolean("transitioning", true);
                 entity.setChanged();
             }
+        }
+    }
+
+    @Inject(
+//            method = "relocateBlock(Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/core/BlockPos;ZLorg/valkyrienskies/core/api/ships/ServerShip;Lnet/minecraft/world/level/block/Rotation;)V",
+            method = "Lorg/valkyrienskies/mod/util/RelocationUtilKt;relocateBlock(Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/chunk/LevelChunk;Lnet/minecraft/core/BlockPos;ZLorg/valkyrienskies/core/api/ships/ServerShip;Lnet/minecraft/world/level/block/Rotation;)V",
+            at = @At("TAIL"),
+            remap = false
+    )
+    private static void create_pack_server_fixes$relocateBlockMixinTail(LevelChunk fromChunk, BlockPos from, LevelChunk toChunk, BlockPos _to, boolean doUpdate, ServerShip toShip, Rotation rotation, CallbackInfo ci) {
+        Level level = toChunk.getLevel();
+
+        BlockEntity blockEntity = level.getBlockEntity(_to);
+
+        if (blockEntity != null) {
+            blockEntity.getPersistentData().remove("transitioning");
+            blockEntity.setChanged();
         }
     }
 }
